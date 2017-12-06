@@ -24,6 +24,24 @@ from nameparser.parser import HumanName
 
 urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html" #news["articles"][1]["url"]
 
+class Person:
+
+    def __init__(self, prename, surname):
+        self.occurence = 1
+        self.prename = prename
+        self.surname = surname
+
+    def increaseOccurence(self):
+        self.occurence += 1
+
+    def getSurname(self):
+        return self.surname
+
+    def getFullName(self):
+        return self.prename + ' ' + self.surname
+
+    def getOccurence(self):
+        return self.occurence
 
 def getArticleText(urlArticle, newsPage = []):
   res = requests.get(urlArticle)
@@ -49,24 +67,23 @@ def getHumanNames(text):
     person_list = []
     person = []
     name = ""
-    print("==============TOKENS==============\n")
-    print(tokens)
-    print("\n")
-    print("==============POS============== \n")
-    print(pos)
-    print("\n")
-    print("==============SENTT==============\n")
-    print(sentt)
+    flag = False
     for subtree in sentt.subtrees(filter=lambda t: t.label() == 'PERSON'):
         for leaf in subtree.leaves():
             person.append(leaf[0])
-        if len(person) > 1: #avoid grabbing lone surnames
             for part in person:
                 name += part + ' '
-            if name[:-1] not in person_list:
-                person_list.append(name[:-1])
+            for entries in person_list: #checking all existing objects in the list
+              if name[:-1] == entries.getSurname(): #if the surname is in the list increase occurence
+                flag = True
+                entries.increaseOccurence()
+                break
+            if not flag:
+                person_list.append(Person(name[:0],name[:-1])) #append new object with prename and surname to the list
             name = ''
+        flag = False
         person = []
+
 
     return (person_list)
 
@@ -78,4 +95,8 @@ def getHumanNames(text):
 #    i = i+1
 
 names = getHumanNames(getArticleText("http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"))
-print(names)
+for entries in names:
+    print(entries.getFullName())
+    print(entries.getOccurence())
+
+
