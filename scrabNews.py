@@ -5,8 +5,8 @@ import bs4
 import nltk
 from nameparser.parser import HumanName
 
-#request news from news-api at the moment from bild
-#relevantNewspaper = ["Bild", "FAZ"]
+#request news from news-api
+relevantNewspaper = ["al-jazeera-english", "bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk", "the-guardian-uk"]
 #numberOfPosts = 20;
 
 #urlGoogleNews = "https://newsapi.org/v2/top-headlines?sources=" + relevantNewspaper[1] + "&apiKey=" + key;
