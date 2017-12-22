@@ -9,8 +9,6 @@ from nameparser.parser import HumanName
 
 #numberOfPosts = 20;
 
-#urlGoogleNews = "https://newsapi.org/v2/top-headlines?sources=" + relevantNewspaper[1] + "&apiKey=" + key;
-#urlRedditNews = "https://www.reddit.com/r/worldnews/top/.json?count=" + numberOfPosts;
 
 
 
@@ -64,7 +62,7 @@ def getArticleText(urlArticle, newsPage = []):
     i += 1
   return articleText
 
-def getArticles(APIKey):
+def getArticlesNewsAPI(APIKey):
     #request news from news-api
     relevantNewspaper = ["bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk", "the-guardian-uk","al-jazeera-english"]
     articlesURL = []
@@ -75,6 +73,13 @@ def getArticles(APIKey):
         for l, articles in enumerate(news, 0):
             articlesURL.append(news["articles"][l]["url"])
     return articlesURL
+
+def getArticlesReddit(numberOfPosts = 20):
+    articlesURL = []
+    urlRedditNews = "https://www.reddit.com/r/worldnews/top/.json?count=" + str(numberOfPosts)
+    news = requests.get(urlRedditNews)
+    news = news.json()
+    print(news['data']['children'])
 
 
 
@@ -118,6 +123,4 @@ def getHumanNames(text):
 #    print(entries.getFullName())
 #    print(entries.getOccurence())
 
-apikey = readAPIKey("APIKey.txt")
-articles = getArticles(apikey)
-print(articles)
+getArticlesReddit()
