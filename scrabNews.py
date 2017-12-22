@@ -1,3 +1,4 @@
+
 import json
 import requests
 import bs4
@@ -5,15 +6,12 @@ import bs4
 import nltk
 from nameparser.parser import HumanName
 
-#request news from news-api
-relevantNewspaper = ["al-jazeera-english", "bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk", "the-guardian-uk"]
+
 #numberOfPosts = 20;
 
 #urlGoogleNews = "https://newsapi.org/v2/top-headlines?sources=" + relevantNewspaper[1] + "&apiKey=" + key;
 #urlRedditNews = "https://www.reddit.com/r/worldnews/top/.json?count=" + numberOfPosts;
 
-#news = requests.get(urlGoogleNews)
-#news = news.json() #convert response into a json
 
 
 #scrap html code
@@ -22,7 +20,7 @@ relevantNewspaper = ["al-jazeera-english", "bbc-news", "cnn", "fox-news", "nbc-n
 
 
 
-urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html" #news["articles"][1]["url"]
+urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"
 
 class Person:
 
@@ -47,8 +45,8 @@ class Person:
 #example usage: readAPIKey("APIKey.txt")
 def readAPIKey(APIKeyFile):
     APIKey = open(APIKeyFile, "r") 
-    APIKey = APIKey.read()
-    return APIKey
+    APIKey = APIKey.read().splitlines() #splitlines is needed otherwise read would give \n at the end of a line and then the api key is invalid
+    return APIKey[0] #APIKey is a list after the usage of splitlines and we just want to return the first entry
 
 
 def getArticleText(urlArticle, newsPage = []):
@@ -65,6 +63,20 @@ def getArticleText(urlArticle, newsPage = []):
     articleText += elems[i].getText() + " "
     i += 1
   return articleText
+
+def getArticles(APIKey):
+    #request news from news-api
+    relevantNewspaper = ["bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk", "the-guardian-uk","al-jazeera-english"]
+    articlesURL = []
+    for i, newspaper in enumerate(relevantNewspaper, 0):
+        urlGoogleNews = ("https://newsapi.org/v2/top-headlines?sources="+relevantNewspaper[i]+"&apiKey="+APIKey)
+        news = requests.get(urlGoogleNews)
+        news = news.json() #convert response into a json
+        for l, articles in enumerate(news, 0):
+            articlesURL.append(news["articles"][l]["url"])
+    return articlesURL
+
+
 
 
 #the labels gpe and gsp indicate countriers or capitals
@@ -106,4 +118,6 @@ def getHumanNames(text):
 #    print(entries.getFullName())
 #    print(entries.getOccurence())
 
-
+apikey = readAPIKey("APIKey.txt")
+articles = getArticles(apikey)
+print(articles)
