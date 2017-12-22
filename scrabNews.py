@@ -43,6 +43,14 @@ class Person:
     def getOccurence(self):
         return self.occurence
 
+#You can copy the API-Key to a file and then read it with the readAPIKey function
+#example usage: readAPIKey("APIKey.txt")
+def readAPIKey(APIKeyFile):
+    APIKey = open(APIKeyFile, "r") 
+    APIKey = APIKey.read()
+    return APIKey
+
+
 def getArticleText(urlArticle, newsPage = []):
   res = requests.get(urlArticle)
   res.raise_for_status()
@@ -84,7 +92,6 @@ def getHumanNames(text):
         flag = False
         person = []
 
-
     return (person_list)
 
 
@@ -94,9 +101,9 @@ def getHumanNames(text):
 #    print(news["articles"][i]["title"])
 #    i = i+1
 
-names = getHumanNames(getArticleText("http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"))
-for entries in names:
-    print(entries.getFullName())
-    print(entries.getOccurence())
+#names = getHumanNames(getArticleText("http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"))
+#for entries in names:
+#    print(entries.getFullName())
+#    print(entries.getOccurence())
 
 
