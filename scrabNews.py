@@ -50,7 +50,7 @@ def readAPIKey(APIKeyFile):
 def getArticleText(urlArticle, newsPage = []):
   res = requests.get(urlArticle)
   res.raise_for_status()
-  htmlArticle = bs4.BeautifulSoup(res.text)
+  htmlArticle = bs4.BeautifulSoup(res.text, "lxml")
 
   ## CNN
   elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
@@ -125,4 +125,6 @@ def getHumanNames(text):
 #    print(entries.getFullName())
 #    print(entries.getOccurence())
 
-getArticlesReddit()
+text = getArticleText(urlArticle)
+persons = getHumanNames(text)
+print(persons)
