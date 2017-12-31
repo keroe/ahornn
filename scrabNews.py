@@ -28,11 +28,13 @@ from nameparser.parser import HumanName
 #urlArticle = "http://www.foxnews.com/opinion/2017/12/31/liz-peek-what-trump-didnt-do-in-2017-presidents-hysteria-prone-critics-must-be-sorely-disappointed.html"
 
 # NBC news test article
-urlArticle = "http://www.nbcnews.com/politics/politics-news/papadopoulos-brag-australian-diplomat-was-key-factor-fbi-s-russia-n833691"
+#urlArticle = "http://www.nbcnews.com/politics/politics-news/papadopoulos-brag-australian-diplomat-was-key-factor-fbi-s-russia-n833691"
 
 #the guardian test article
-urlArticle = "https://www.theguardian.com/uk-news/2017/dec/31/northern-bell-rochdale-town-hall-put-forward-as-big-ben-stand-in"
+#urlArticle = "https://www.theguardian.com/uk-news/2017/dec/31/northern-bell-rochdale-town-hall-put-forward-as-big-ben-stand-in"
 
+# Al-Jazeera test article 
+urlArticle = "http://www.aljazeera.com/news/2017/12/iran-blocks-instagram-telegram-protests-171231133323939.html"
 
 class Person:
 
@@ -76,10 +78,13 @@ def getArticleText(urlArticle, newsPage = []):
   #elems = htmlArticle.find('div', class_="article-body").findAll('p')
 
   ## NBC news
-  #elems = htmlArticle.find('div', class_ = "article-body").findAll('p')
+  #elems = htmlArticle.find('div', class_= "article-body").findAll('p')
 
   ## The guardian 
-  elems = htmlArticle.find('div', class_ = "content__article-body from-content-api js-article__body").findAll('p')
+  #elems = htmlArticle.find('div', class_= "content__article-body from-content-api js-article__body").findAll('p')
+  
+  ## Al-Jazeera
+  elems = htmlArticle.find('div', class_="main-article-body").findAll('p')
 
   i = 0
   articleText = ""
