@@ -34,7 +34,10 @@ from nameparser.parser import HumanName
 #urlArticle = "https://www.theguardian.com/uk-news/2017/dec/31/northern-bell-rochdale-town-hall-put-forward-as-big-ben-stand-in"
 
 # Al-Jazeera test article 
-urlArticle = "http://www.aljazeera.com/news/2017/12/iran-blocks-instagram-telegram-protests-171231133323939.html"
+#urlArticle = "http://www.aljazeera.com/news/2017/12/iran-blocks-instagram-telegram-protests-171231133323939.html"
+
+# other news sources 
+urlArticle = "http://www.telegraph.co.uk/science/2017/12/29/british-polar-explorer-ben-saunders-echoes-shackleton-has-abandons/"
 
 class Person:
 
@@ -84,7 +87,10 @@ def getArticleText(urlArticle, newsPage = []):
   #elems = htmlArticle.find('div', class_= "content__article-body from-content-api js-article__body").findAll('p')
   
   ## Al-Jazeera
-  elems = htmlArticle.find('div', class_="main-article-body").findAll('p')
+  #elems = htmlArticle.find('div', class_="main-article-body").findAll('p')
+  
+  ## other news source
+  elems = htmlArticle.findAll('p')
 
   i = 0
   articleText = ""
