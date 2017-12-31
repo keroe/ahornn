@@ -18,7 +18,11 @@ from nameparser.parser import HumanName
 
 
 
-urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"
+# CNN test article
+# urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"
+
+# BBC-news test article
+urlArticle = "http://www.bbc.com/news/world-us-canada-42525880"
 
 class Person:
 
@@ -53,8 +57,10 @@ def getArticleText(urlArticle, newsPage = []):
   htmlArticle = bs4.BeautifulSoup(res.text, "lxml")
 
   ## CNN
-  elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
+  #elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
 
+  ## BBC-news
+  elems = htmlArticle.find('div', class_="story-body__inner").findAll('p')
   i = 0
   articleText = ""
   for divs in elems:
@@ -126,5 +132,4 @@ def getHumanNames(text):
 #    print(entries.getOccurence())
 
 text = getArticleText(urlArticle)
-persons = getHumanNames(text)
-print(persons)
+print(text)
