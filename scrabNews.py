@@ -22,7 +22,12 @@ from nameparser.parser import HumanName
 # urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"
 
 # BBC-news test article
-urlArticle = "http://www.bbc.com/news/world-us-canada-42525880"
+#urlArticle = "http://www.bbc.com/news/world-us-canada-42525880"
+
+# Fox-news test article
+urlArticle = "http://www.foxnews.com/opinion/2017/12/31/liz-peek-what-trump-didnt-do-in-2017-presidents-hysteria-prone-critics-must-be-sorely-disappointed.html"
+
+#
 
 class Person:
 
@@ -59,8 +64,12 @@ def getArticleText(urlArticle, newsPage = []):
   ## CNN
   #elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
 
-  ## BBC-news
-  elems = htmlArticle.find('div', class_="story-body__inner").findAll('p')
+  ## BBC news
+  #elems = htmlArticle.find('div', class_="story-body__inner").findAll('p')
+
+  ## Fox news
+  elems = htmlArticle.find('div', class_="article-body").findAll('p')
+
   i = 0
   articleText = ""
   for divs in elems:
