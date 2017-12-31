@@ -30,6 +30,10 @@ from nameparser.parser import HumanName
 # NBC news test article
 urlArticle = "http://www.nbcnews.com/politics/politics-news/papadopoulos-brag-australian-diplomat-was-key-factor-fbi-s-russia-n833691"
 
+#the guardian test article
+urlArticle = "https://www.theguardian.com/uk-news/2017/dec/31/northern-bell-rochdale-town-hall-put-forward-as-big-ben-stand-in"
+
+
 class Person:
 
     def __init__(self, prename, surname):
@@ -72,7 +76,10 @@ def getArticleText(urlArticle, newsPage = []):
   #elems = htmlArticle.find('div', class_="article-body").findAll('p')
 
   ## NBC news
-  elems = htmlArticle.find('div', class_ = "article-body").findAll('p')
+  #elems = htmlArticle.find('div', class_ = "article-body").findAll('p')
+
+  ## The guardian 
+  elems = htmlArticle.find('div', class_ = "content__article-body from-content-api js-article__body").findAll('p')
 
   i = 0
   articleText = ""
