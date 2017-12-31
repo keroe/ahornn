@@ -25,9 +25,10 @@ from nameparser.parser import HumanName
 #urlArticle = "http://www.bbc.com/news/world-us-canada-42525880"
 
 # Fox-news test article
-urlArticle = "http://www.foxnews.com/opinion/2017/12/31/liz-peek-what-trump-didnt-do-in-2017-presidents-hysteria-prone-critics-must-be-sorely-disappointed.html"
+#urlArticle = "http://www.foxnews.com/opinion/2017/12/31/liz-peek-what-trump-didnt-do-in-2017-presidents-hysteria-prone-critics-must-be-sorely-disappointed.html"
 
-#
+# NBC news test article
+urlArticle = "http://www.nbcnews.com/politics/politics-news/papadopoulos-brag-australian-diplomat-was-key-factor-fbi-s-russia-n833691"
 
 class Person:
 
@@ -68,7 +69,10 @@ def getArticleText(urlArticle, newsPage = []):
   #elems = htmlArticle.find('div', class_="story-body__inner").findAll('p')
 
   ## Fox news
-  elems = htmlArticle.find('div', class_="article-body").findAll('p')
+  #elems = htmlArticle.find('div', class_="article-body").findAll('p')
+
+  ## NBC news
+  elems = htmlArticle.find('div', class_ = "article-body").findAll('p')
 
   i = 0
   articleText = ""
@@ -79,7 +83,7 @@ def getArticleText(urlArticle, newsPage = []):
 
 def getArticlesNewsAPI(APIKey):
     #request news from news-api
-    relevantNewspaper = ["bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk", "the-guardian-uk","al-jazeera-english"]
+    relevantNewspaper = ["bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk","al-jazeera-english"]
     articlesURL = []
     for i, newspaper in enumerate(relevantNewspaper, 0):
         urlGoogleNews = ("https://newsapi.org/v2/top-headlines?sources="+relevantNewspaper[i]+"&apiKey="+APIKey)
