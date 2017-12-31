@@ -79,7 +79,9 @@ def getArticlesReddit(numberOfPosts = 20):
     urlRedditNews = "https://www.reddit.com/r/worldnews/top/.json?count=" + str(numberOfPosts)
     news = requests.get(urlRedditNews)
     news = news.json()
-    print(news['data']['children'])
+    for i, news in enumerate(news["data"]["children"], 0):
+        articlesURL.append(news["data"]["children"][i]['data']['url'])
+    return articlesURL
 
 
 
