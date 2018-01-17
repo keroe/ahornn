@@ -3,8 +3,6 @@ import json
 import requests
 import bs4
 
-import nltk
-from nameparser.parser import HumanName
 
 
 #numberOfPosts = 20;
@@ -19,7 +17,7 @@ from nameparser.parser import HumanName
 
 
 # CNN test article
-# urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"
+urlArticle = "http://us.cnn.com/2017/12/01/politics/michael-flynn-charged/index.html"
 
 # BBC-news test article
 #urlArticle = "http://www.bbc.com/news/world-us-canada-42525880"
@@ -37,26 +35,8 @@ from nameparser.parser import HumanName
 #urlArticle = "http://www.aljazeera.com/news/2017/12/iran-blocks-instagram-telegram-protests-171231133323939.html"
 
 # other news sources 
-urlArticle = "http://www.telegraph.co.uk/science/2017/12/29/british-polar-explorer-ben-saunders-echoes-shackleton-has-abandons/"
+#urlArticle = "http://www.telegraph.co.uk/science/2017/12/29/british-polar-explorer-ben-saunders-echoes-shackleton-has-abandons/"
 
-class Person:
-
-    def __init__(self, prename, surname):
-        self.occurence = 1
-        self.prename = prename
-        self.surname = surname
-
-    def increaseOccurence(self):
-        self.occurence += 1
-
-    def getSurname(self):
-        return self.surname
-
-    def getFullName(self):
-        return self.prename + ' ' + self.surname
-
-    def getOccurence(self):
-        return self.occurence
 
 #You can copy the API-Key to a file and then read it with the readAPIKey function
 #example usage: readAPIKey("APIKey.txt")
@@ -72,7 +52,7 @@ def getArticleText(urlArticle, newsPage = []):
   htmlArticle = bs4.BeautifulSoup(res.text, "lxml")
 
   ## CNN
-  #elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
+  elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
 
   ## BBC news
   #elems = htmlArticle.find('div', class_="story-body__inner").findAll('p')
@@ -90,7 +70,7 @@ def getArticleText(urlArticle, newsPage = []):
   #elems = htmlArticle.find('div', class_="main-article-body").findAll('p')
   
   ## other news source
-  elems = htmlArticle.findAll('p')
+  #elems = htmlArticle.findAll('p')
 
   i = 0
   articleText = ""
@@ -120,37 +100,6 @@ def getArticlesReddit(numberOfPosts = 20):
         articlesURL.append(news["data"]["children"][i]['data']['url'])
     return articlesURL
 
-
-
-
-#the labels gpe and gsp indicate countriers or capitals
-def getHumanNames(text):
-    tokens = nltk.tokenize.word_tokenize(text)
-    pos = nltk.pos_tag(tokens)
-    sentt = nltk.ne_chunk(pos, binary = False)
-    person_list = []
-    person = []
-    name = ""
-    flag = False
-    for subtree in sentt.subtrees(filter=lambda t: t.label() == 'PERSON'):
-        for leaf in subtree.leaves():
-            person.append(leaf[0])
-            for part in person:
-                name += part + ' '
-            for entries in person_list: #checking all existing objects in the list
-              if name[:-1] == entries.getSurname(): #if the surname is in the list increase occurence
-                flag = True
-                entries.increaseOccurence()
-                break
-            if not flag:
-                person_list.append(Person(name[:0],name[:-1])) #append new object with prename and surname to the list
-            name = ''
-        flag = False
-        person = []
-
-    return (person_list)
-
-
 #debug json list elements
 #i = 0
 #for objects in news:
@@ -162,5 +111,3 @@ def getHumanNames(text):
 #    print(entries.getFullName())
 #    print(entries.getOccurence())
 
-text = getArticleText(urlArticle)
-print(text)
