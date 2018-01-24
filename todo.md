@@ -1,0 +1,4 @@
+-Write log file
+-move error counter to newspaper class
+-find better way to search through newspaper
+-if one newspaper has 10 errors, search for new div-id
