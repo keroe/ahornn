@@ -2,7 +2,7 @@
 import json
 import requests
 import bs4
-
+from newspaper import Newspaper
 
 
 #numberOfPosts = 20;
@@ -46,49 +46,33 @@ def readAPIKey(APIKeyFile):
     return APIKey[0] #APIKey is a list after the usage of splitlines and we just want to return the first entry
 
 
-def getArticleText(urlArticle, newsPage = []):
+def getArticleText(urlArticle, div_id, newsPage = []):
   res = requests.get(urlArticle)
   res.raise_for_status()
   htmlArticle = bs4.BeautifulSoup(res.text, "lxml")
 
-  ## CNN
-  elems = htmlArticle.find_all('div', class_="zn-body__paragraph")
+  try:
+    elems = htmlArticle.find('div', class_=div_id).findAll('p')
+    articleText = ""
+    error_flag = False
+    for i, divs in enumerate(elems, 0):
+      articleText += elems[i].getText() + " "
+      return articleText, error_flag
+  except AttributeError:
+      error_flag = True
+      return '', error_flag
+    
 
-  ## BBC news
-  #elems = htmlArticle.find('div', class_="story-body__inner").findAll('p')
 
-  ## Fox news
-  #elems = htmlArticle.find('div', class_="article-body").findAll('p')
 
-  ## NBC news
-  #elems = htmlArticle.find('div', class_= "article-body").findAll('p')
-
-  ## The guardian 
-  #elems = htmlArticle.find('div', class_= "content__article-body from-content-api js-article__body").findAll('p')
-  
-  ## Al-Jazeera
-  #elems = htmlArticle.find('div', class_="main-article-body").findAll('p')
-  
-  ## other news source
-  #elems = htmlArticle.findAll('p')
-
-  i = 0
-  articleText = ""
-  for divs in elems:
-    articleText += elems[i].getText() + " "
-    i += 1
-  return articleText
-
-def getArticlesNewsAPI(APIKey):
+def getArticlesNewsAPI(relevantNewspaperName, APIKey):
     #request news from news-api
-    relevantNewspaper = ["bbc-news", "cnn", "fox-news", "nbc-news", "the-guardian-uk","al-jazeera-english"]
     articlesURL = []
-    for i, newspaper in enumerate(relevantNewspaper, 0):
-        urlGoogleNews = ("https://newsapi.org/v2/top-headlines?sources="+relevantNewspaper[i]+"&apiKey="+APIKey)
-        news = requests.get(urlGoogleNews)
-        news = news.json() #convert response into a json
-        for l, articles in enumerate(news, 0):
-            articlesURL.append(news["articles"][l]["url"])
+    urlNews = ("https://newsapi.org/v2/top-headlines?sources="+relevantNewspaperName+"&apiKey="+APIKey)
+    news = requests.get(urlNews)
+    news = news.json() #convert response into a json
+    for l, articles in enumerate(news["articles"], 0):
+        articlesURL.append(news["articles"][l]["url"])
     return articlesURL
 
 def getArticlesReddit(numberOfPosts = 20):
