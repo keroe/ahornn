@@ -7,7 +7,10 @@ class Person:
 
     def increaseOccurence(self):
         self.occurence += 1
-
+    def addOccurence(self, occurence):
+        self.occurence += occurence
+    def getPrename(self):
+        return self.prename
     def getSurname(self):
         return self.surname
 
